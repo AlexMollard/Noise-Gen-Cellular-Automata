@@ -30,21 +30,21 @@ GridManager::GridManager(int cellAmount, float windowSizeX, float windowSizeY)
 	{
 		for (int y = 0; y < _CellTotal; y++)
 		{
-			//int _RandomAlive = rand() % 50;
-			//if (_RandomAlive < 25)
-				_Cells[x][y].SetAlive(true);
-			//else
-			//	_Cells[x][y].SetAlive(false);
+			_Cells[x][y].SetAlive(true);
 
 			if (_Cells[x][y].GetAlive() == true)
 			{
-				int _RandomType = rand() % 30;
+				int _RandomType = rand() % 50;
 				if (_RandomType < 10)
 					_Cells[x][y].SetType('1');
 				else if (_RandomType < 20)
 					_Cells[x][y].SetType('2');
 				else if (_RandomType < 30)
 					_Cells[x][y].SetType('3');
+				else if (_RandomType < 40)
+					_Cells[x][y].SetType('4');
+				else if (_RandomType < 50)
+					_Cells[x][y].SetType('5');
 			}
 		}
 	}
@@ -104,7 +104,7 @@ void GridManager::Update(aie::Input* input, float deltaTime, float windowWidth, 
 				}
 			}
 		}
-		}
+	}
 
 }
 
@@ -114,15 +114,15 @@ void GridManager::Resize(float windowWidth, float windowHeight)
 		_WindowSizeY = windowHeight;
 
 		// Cell size
-		_CellSizeX = _WindowSizeX / _CellTotal;
-		_CellSizeY = _WindowSizeY / _CellTotal;
+		_CellSizeX = _WindowSizeX / _CellTotal / 2;
+		_CellSizeY = _WindowSizeY / _CellTotal / 2;
 
 		for (int x = 0; x < _CellTotal; x++)
 		{
 			for (int y = 0; y < _CellTotal; y++)
 			{
 				// Cell Postition
-				_Cells[x][y].SetPos(x * _CellSizeX, y * _CellSizeY);
+				_Cells[x][y].SetPos(x * _CellSizeX * 2, y * _CellSizeY * 2);
 			}
 		}
 }
@@ -295,7 +295,7 @@ void GridManager::CheckNeighbours()
 			}
 			else if (_Cells[x][y].GetType() == '2') //Paper			 killed by scissors and nuke
 			{
-				if (_NukeNeighbours > _ScissorNeighbours - 2)
+				if (_NukeNeighbours > _ScissorNeighbours - 1)
 				{
 					if (_NukeNeighbours > _PaperNeighbours)
 					{
@@ -304,7 +304,7 @@ void GridManager::CheckNeighbours()
 				}
 				else if (_ScissorNeighbours < _ScissorNeighbours)
 				{
-					if (_ScissorNeighbours > _PaperNeighbours)
+					if (_ScissorNeighbours > _PaperNeighbours - 2)
 					{
 						_Cells[x][y].SetChangeScissors(true);
 					}
@@ -329,7 +329,7 @@ void GridManager::CheckNeighbours()
 			}
 			else if (_Cells[x][y].GetType() == '4') //Gun			Killed by Rock and paper
 			{
-				if (_PaperNeighbours > _RockNeighbours - 2)
+				if (_PaperNeighbours > _RockNeighbours - 6)
 				{
 					if (_PaperNeighbours > _GunNeighbours)
 					{
@@ -348,17 +348,17 @@ void GridManager::CheckNeighbours()
 			{
 				if (_ScissorNeighbours > _GunNeighbours)
 				{
-					if (_ScissorNeighbours > _GunNeighbours - 2)
+					if (_ScissorNeighbours > _NukeNeighbours - 4)
 					{
 						_Cells[x][y].SetChangeScissors(true);
 					}
 				}
 				else if (_ScissorNeighbours < _GunNeighbours)
 				{
-					if (_GunNeighbours > _GunNeighbours)
-					{
-						_Cells[x][y].SetChangeGun(true);
-					}
+					//if (_GunNeighbours > _GunNeighbours)
+					//{
+					//	_Cells[x][y].SetChangeGun(true);
+					//}
 				}
 			}
 		}
