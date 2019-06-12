@@ -36,15 +36,15 @@ GridManager::GridManager(int cellAmount, float windowSizeX, float windowSizeY)
 			{
 				int _RandomType = rand() % 50;
 				if (_RandomType < 10)
-					_Cells[x][y].SetType('1');
+					_Cells[x][y].SetType('1');	//Lava
 				else if (_RandomType < 20)
-					_Cells[x][y].SetType('2');
-				else if (_RandomType < 30)
-					_Cells[x][y].SetType('3');
+					_Cells[x][y].SetType('2');	//Shallow
+				else if (_RandomType < 25)
+					_Cells[x][y].SetType('3');	//DeepWater
 				else if (_RandomType < 40)
-					_Cells[x][y].SetType('4');
+					_Cells[x][y].SetType('4');	//Sand
 				else if (_RandomType < 50)
-					_Cells[x][y].SetType('5');
+					_Cells[x][y].SetType('5');	//Grass
 			}
 		}
 	}
@@ -92,15 +92,15 @@ void GridManager::Update(aie::Input* input, float deltaTime, float windowWidth, 
 				{
 					int _RandomType = rand() % 50;
 					if (_RandomType < 10)
-						_Cells[x][y].SetType('1');
+						_Cells[x][y].SetType('1');	//Lava
 					else if (_RandomType < 20)
-						_Cells[x][y].SetType('2');
-					else if (_RandomType < 30)
-						_Cells[x][y].SetType('3');
+						_Cells[x][y].SetType('2');	//Shallow
+					else if (_RandomType < 25)
+						_Cells[x][y].SetType('3');	//DeepWater
 					else if (_RandomType < 40)
-						_Cells[x][y].SetType('4');
+						_Cells[x][y].SetType('4');	//Sand
 					else if (_RandomType < 50)
-						_Cells[x][y].SetType('5');
+						_Cells[x][y].SetType('5');	//Grass
 				}
 			}
 		}
@@ -114,15 +114,15 @@ void GridManager::Resize(float windowWidth, float windowHeight)
 		_WindowSizeY = windowHeight;
 
 		// Cell size
-		_CellSizeX = _WindowSizeX / _CellTotal / 2;
-		_CellSizeY = _WindowSizeY / _CellTotal / 2;
+		_CellSizeX = _WindowSizeX / _CellTotal;
+		_CellSizeY = _WindowSizeY / _CellTotal;
 
 		for (int x = 0; x < _CellTotal; x++)
 		{
 			for (int y = 0; y < _CellTotal; y++)
 			{
 				// Cell Postition
-				_Cells[x][y].SetPos(x * _CellSizeX * 2, y * _CellSizeY * 2);
+				_Cells[x][y].SetPos(x * _CellSizeX, y * _CellSizeY);
 			}
 		}
 }
@@ -133,26 +133,26 @@ void GridManager::CheckNeighbours()
 	{
 		for (int y = 0; y < _CellTotal; y++)
 		{
-			int _RockNeighbours = 0;
-			int _PaperNeighbours = 0;
-			int _ScissorNeighbours = 0;
-			int _GunNeighbours = 0;
-			int _NukeNeighbours = 0;
+			int _LavaNeighbours = 0;
+			int _ShallowNeighbours = 0;
+			int _DeepWaterNeighbours = 0;
+			int _SandNeighbours = 0;
+			int _GrassNeighbours = 0;
 
 			if (x + 1 < _CellTotal && y + 1 < _CellTotal)
 			{														 
 				if (_Cells[x + 1][y + 1].GetAlive())				  // - | - | X
 				{ 													  // - | - | -
 					if (_Cells[x + 1][y + 1].GetType() == '1')		  // - | - | -
-						_RockNeighbours += 1;
+						_LavaNeighbours += 1;
 					else if (_Cells[x + 1][y + 1].GetType() == '2')
-						_PaperNeighbours += 1;
+						_ShallowNeighbours += 1;
 					else if (_Cells[x + 1][y + 1].GetType() == '3')							 
-						_ScissorNeighbours += 1;	
+						_DeepWaterNeighbours += 1;	
 					else if (_Cells[x + 1][y + 1].GetType() == '4')
-						_GunNeighbours += 1;
+						_SandNeighbours += 1;
 					else if (_Cells[x + 1][y + 1].GetType() == '5')
-						_GunNeighbours += 1;
+						_SandNeighbours += 1;
 				}																		 
 			}
 
@@ -161,15 +161,15 @@ void GridManager::CheckNeighbours()
 				if (_Cells[x][y + 1].GetAlive())					  // - | X | -
 				{													  // - | - | -
 					if (_Cells[x][y + 1].GetType() == '1')		 	  // - | - | -
-						_RockNeighbours += 1;
+						_LavaNeighbours += 1;
 					else if (_Cells[x][y + 1].GetType() == '2')
-						_PaperNeighbours += 1;
+						_ShallowNeighbours += 1;
 					else if (_Cells[x][y + 1].GetType() == '3')						
-						_ScissorNeighbours += 1;
+						_DeepWaterNeighbours += 1;
 					else if (_Cells[x][y + 1].GetType() == '4')
-						_GunNeighbours += 1;
+						_SandNeighbours += 1;
 					else if (_Cells[x][y + 1].GetType() == '5')
-						_GunNeighbours += 1;
+						_SandNeighbours += 1;
 				}																	 
 			}																		 
 																					 
@@ -178,15 +178,15 @@ void GridManager::CheckNeighbours()
 				if (_Cells[x - 1][y + 1].GetAlive())			  
 				{												  
 					if (_Cells[x - 1][y + 1].GetType() == '1')
-						_RockNeighbours += 1;
+						_LavaNeighbours += 1;
 					else if (_Cells[x - 1][y + 1].GetType() == '2')
-						_PaperNeighbours += 1;
+						_ShallowNeighbours += 1;
 					else if (_Cells[x - 1][y + 1].GetType() == '3')
-						_ScissorNeighbours += 1;
+						_DeepWaterNeighbours += 1;
 					else if (_Cells[x - 1][y + 1].GetType() == '4')
-						_GunNeighbours += 1;
+						_SandNeighbours += 1;
 					else if (_Cells[x - 1][y + 1].GetType() == '5')
-						_NukeNeighbours += 1;
+						_GrassNeighbours += 1;
 				}
 			}
 
@@ -195,15 +195,15 @@ void GridManager::CheckNeighbours()
 				if (_Cells[x - 1][y].GetAlive())				  
 				{
 					if (_Cells[x - 1][y].GetType() == '1')
-						_RockNeighbours += 1;
+						_LavaNeighbours += 1;
 					else if (_Cells[x - 1][y].GetType() == '2')
-						_PaperNeighbours += 1;
+						_ShallowNeighbours += 1;
 					else if (_Cells[x - 1][y].GetType() == '3')
-						_ScissorNeighbours += 1;
+						_DeepWaterNeighbours += 1;
 					else if (_Cells[x - 1][y].GetType() == '4')
-						_GunNeighbours += 1;
+						_SandNeighbours += 1;
 					else if (_Cells[x - 1][y].GetType() == '5')
-						_NukeNeighbours += 1;
+						_GrassNeighbours += 1;
 				}
 			}
 
@@ -212,15 +212,15 @@ void GridManager::CheckNeighbours()
 				if (_Cells[x + 1][y].GetAlive())				  
 				{
 					if (_Cells[x + 1][y].GetType() == '1')
-						_RockNeighbours += 1;
+						_LavaNeighbours += 1;
 					else if (_Cells[x + 1][y].GetType() == '2')
-						_PaperNeighbours += 1;
+						_ShallowNeighbours += 1;
 					else if (_Cells[x + 1][y].GetType() == '3')
-						_ScissorNeighbours += 1;
+						_DeepWaterNeighbours += 1;
 					else if (_Cells[x + 1][y].GetType() == '4')
-						_GunNeighbours += 1;
+						_SandNeighbours += 1;
 					else if (_Cells[x + 1][y].GetType() == '5')
-						_NukeNeighbours += 1;
+						_GrassNeighbours += 1;
 				}
 			}
 
@@ -229,15 +229,15 @@ void GridManager::CheckNeighbours()
 				if (_Cells[x - 1][y - 1].GetAlive())			  
 				{
 					if (_Cells[x - 1][y - 1].GetType() == '1')
-						_RockNeighbours += 1;
+						_LavaNeighbours += 1;
 					else if (_Cells[x - 1][y - 1].GetType() == '2')
-						_PaperNeighbours += 1;
+						_ShallowNeighbours += 1;
 					else if (_Cells[x - 1][y - 1].GetType() == '3')
-						_ScissorNeighbours += 1;
+						_DeepWaterNeighbours += 1;
 					else if (_Cells[x - 1][y - 1].GetType() == '4')
-						_GunNeighbours += 1;
+						_SandNeighbours += 1;
 					else if (_Cells[x - 1][y - 1].GetType() == '5')
-						_NukeNeighbours += 1;
+						_GrassNeighbours += 1;
 				}
 			}
 
@@ -246,15 +246,15 @@ void GridManager::CheckNeighbours()
 				if (_Cells[x][y - 1].GetAlive())				  
 				{
 					if (_Cells[x][y - 1].GetType() == '1')
-						_RockNeighbours += 1;
+						_LavaNeighbours += 1;
 					else if (_Cells[x][y - 1].GetType() == '2')
-						_PaperNeighbours += 1;
+						_ShallowNeighbours += 1;
 					else if (_Cells[x][y - 1].GetType() == '3')
-						_ScissorNeighbours += 1;
+						_DeepWaterNeighbours += 1;
 					else if (_Cells[x][y - 1].GetType() == '4')
-						_GunNeighbours += 1;
+						_SandNeighbours += 1;
 					else if (_Cells[x][y - 1].GetType() == '5')
-						_NukeNeighbours += 1;
+						_GrassNeighbours += 1;
 				}
 			}
 
@@ -264,102 +264,149 @@ void GridManager::CheckNeighbours()
 				if (_Cells[x + 1][y - 1].GetAlive())			  
 				{
 					if (_Cells[x + 1][y - 1].GetType() == '1')
-						_RockNeighbours += 1;
+						_LavaNeighbours += 1;
 					else if (_Cells[x + 1][y - 1].GetType() == '2')
-						_PaperNeighbours += 1;
+						_ShallowNeighbours += 1;
 					else if (_Cells[x + 1][y - 1].GetType() == '3')
-						_ScissorNeighbours += 1;
+						_DeepWaterNeighbours += 1;
 					else if (_Cells[x + 1][y - 1].GetType() == '4')
-						_GunNeighbours += 1;
+						_SandNeighbours += 1;
 					else if (_Cells[x + 1][y - 1].GetType() == '5')
-						_NukeNeighbours += 1;
+						_GrassNeighbours += 1;
 				}
 			}
 
-			if (_Cells[x][y].GetType() == '1')	//Rock				killed by nuke and paper
+			// Food Chain
+			if (_ShallowNeighbours > 2 && _GrassNeighbours == 0 && _Cells[x][y].GetType() == '2')
 			{
-				if (_PaperNeighbours > _NukeNeighbours)
+				_Cells[x][y].SetChangeDeepWaters(true);
+			}
+			else if (_Cells[x][y].GetType() == '4' && _GrassNeighbours > 4)
+			{
+				_Cells[x][y].SetChangeGrass(true);
+			}
+			else if (_Cells[x][y].GetType() == '4' && _DeepWaterNeighbours > 5)
+			{
+				_Cells[x][y].SetChangeDeepWaters(true);
+			}
+			else if (_Cells[x][y].GetType() == '2' && _DeepWaterNeighbours > 5)
+			{
+				_Cells[x][y].SetChangeDeepWaters(true);
+			}
+			else if (_Cells[x][y].GetType() == '4' && _SandNeighbours > 4)
+			{
+				_Cells[x][y].SetChangeGrass(true);
+			}
+			else if (_Cells[x][y].GetType() == '4' &&  _ShallowNeighbours < 3)
+			{
+				_Cells[x][y].SetChangeSand(true);
+			}
+			else if (_Cells[x][y].GetType() == '3' && _GrassNeighbours > 1)
+			{
+				_Cells[x][y].SetChangeSand(true);
+			}
+			else if (_Cells[x][y].GetType() == '5' && _ShallowNeighbours > 2)
+			{
+				_Cells[x][y].SetChangeSand(true);
+			}
+			else if (_Cells[x][y].GetType() == '5' && _DeepWaterNeighbours > 3)
+			{
+				_Cells[x][y].SetChangeDeepWaters(true);
+			}
+			else if (_Cells[x][y].GetType() == '4' && _SandNeighbours > 5)
+			{
+				_Cells[x][y].SetChangeGrass(true);
+			}
+			else if (_Cells[x][y].GetType() == '1')	//Lava				killed by Grass and Shallow
+			{
+				if (_ShallowNeighbours > _GrassNeighbours)
 				{
-					if (_PaperNeighbours > _RockNeighbours - 2 )
+					if (_ShallowNeighbours > _LavaNeighbours - 2 )
 					{
-						_Cells[x][y].SetChangePaper(true);
+						_Cells[x][y].SetChangeShallow(true);
 					}
 				}
-				else if (_PaperNeighbours < _NukeNeighbours)
+				else if (_ShallowNeighbours < _GrassNeighbours)
 				{
-					if (_NukeNeighbours > _RockNeighbours)
+					if (_GrassNeighbours > _LavaNeighbours)
 					{
-						_Cells[x][y].SetChangeNuke(true);
+						_Cells[x][y].SetChangeGrass(true);
 					}
 				}
 			}
-			else if (_Cells[x][y].GetType() == '2') //Paper			 killed by scissors and nuke
+			else if (_Cells[x][y].GetType() == '2') //Shallow			 killed by DeepWaters and Grass
 			{
-				if (_NukeNeighbours > _ScissorNeighbours - 1)
+				if (_GrassNeighbours > _DeepWaterNeighbours - 1)
 				{
-					if (_NukeNeighbours > _PaperNeighbours)
+					if (_GrassNeighbours > _ShallowNeighbours)
 					{
-						_Cells[x][y].SetChangeNuke(true);
+						_Cells[x][y].SetChangeGrass(true);
 					}
 				}
-				else if (_ScissorNeighbours < _ScissorNeighbours)
+				else if (_DeepWaterNeighbours < _DeepWaterNeighbours)
 				{
-					if (_ScissorNeighbours > _PaperNeighbours - 2)
+					if (_DeepWaterNeighbours > _ShallowNeighbours - 2)
 					{
-						_Cells[x][y].SetChangeScissors(true);
+						_Cells[x][y].SetChangeDeepWaters(true);
 					}
 				}
 			}
-			else if (_Cells[x][y].GetType() == '3') //Scissors		Killed by Rock and Gun
+			else if (_Cells[x][y].GetType() == '3') //DeepWater		Killed by Lava and Sand
 			{
-				if (_GunNeighbours > _RockNeighbours)
+				if (_ShallowNeighbours > 5)
 				{
-					if (_GunNeighbours > _ScissorNeighbours - 2)
+					_Cells[x][y].SetChangeShallow(true);
+				}
+
+				if (_SandNeighbours > _LavaNeighbours)
+				{
+					if (_SandNeighbours > _DeepWaterNeighbours)
 					{
-						_Cells[x][y].SetChangeGun(true);
+						_Cells[x][y].SetChangeSand(true);
 					}
 				}
-				else if (_GunNeighbours < _RockNeighbours)
+				else if (_SandNeighbours < _LavaNeighbours)
 				{
-					if (_RockNeighbours > _ScissorNeighbours)
+					if (_LavaNeighbours > _DeepWaterNeighbours)
 					{
-						_Cells[x][y].SetChangeRock(true);
+						_Cells[x][y].SetChangeLava(true);
 					}
 				}
 			}
-			else if (_Cells[x][y].GetType() == '4') //Gun			Killed by Rock and paper
+			else if (_Cells[x][y].GetType() == '4') //Sand			Killed by Lava and Shallow
 			{
-				if (_PaperNeighbours > _RockNeighbours - 6)
+				if (_ShallowNeighbours > _LavaNeighbours - 6)
 				{
-					if (_PaperNeighbours > _GunNeighbours)
+					if (_ShallowNeighbours > _SandNeighbours)
 					{
-						_Cells[x][y].SetChangePaper(true);
+						_Cells[x][y].SetChangeShallow(true);
 					}
 				}
-				else if (_PaperNeighbours < _RockNeighbours)
+				else if (_ShallowNeighbours < _LavaNeighbours)
 				{
-					if (_RockNeighbours > _GunNeighbours)
+					if (_LavaNeighbours > _SandNeighbours)
 					{
-						_Cells[x][y].SetChangeRock(true);
+						_Cells[x][y].SetChangeLava(true);
 					}
 				}
 			}
-			else if (_Cells[x][y].GetType() == '5') //Nuke		Killed by scissors and gun	
+			else if (_Cells[x][y].GetType() == '5') //Grass		Killed by DeepWaters and Sand	
 			{
-				if (_ScissorNeighbours > _GunNeighbours)
-				{
-					if (_ScissorNeighbours > _NukeNeighbours - 4)
+
+				//if (_DeepWaterNeighbours > _SandNeighbours)
+				//{
+					if (_DeepWaterNeighbours > _GrassNeighbours - 1 && _GrassNeighbours == 2)
 					{
-						_Cells[x][y].SetChangeScissors(true);
+						_Cells[x][y].SetChangeDeepWaters(true);
 					}
-				}
-				else if (_ScissorNeighbours < _GunNeighbours)
-				{
-					//if (_GunNeighbours > _GunNeighbours)
-					//{
-					//	_Cells[x][y].SetChangeGun(true);
-					//}
-				}
+				//}
+				//else if (_DeepWaterNeighbours < _SandNeighbours)
+				//{
+				//	//if (_SandNeighbours > _SandNeighbours)
+				//	//{
+				//	//	_Cells[x][y].SetChangeSand(true);
+				//	//}
+				//}
 			}
 		}
 	}
@@ -368,30 +415,30 @@ void GridManager::CheckNeighbours()
 	{
 		for (int y = 0; y < _CellTotal; y++)
 		{
-			if (_Cells[x][y].GetChangePaper())
+			if (_Cells[x][y].GetChangeShallow())
 			{
 				_Cells[x][y].SetType('2');
-				_Cells[x][y].SetChangePaper(false);
+				_Cells[x][y].SetChangeShallow(false);
 			}
-			else if (_Cells[x][y].GetChangeScissors())
+			else if (_Cells[x][y].GetChangeDeepWaters())
 			{
 				_Cells[x][y].SetType('3');
-				_Cells[x][y].SetChangeScissors(false);
+				_Cells[x][y].SetChangeDeepWaters(false);
 			}
-			else if (_Cells[x][y].GetChangeRock())
+			else if (_Cells[x][y].GetChangeLava())
 			{
 				_Cells[x][y].SetType('1');
-				_Cells[x][y].SetChangeRock(false);
+				_Cells[x][y].SetChangeLava(false);
 			}
-			else if (_Cells[x][y].GetChangeGun())
+			else if (_Cells[x][y].GetChangeSand())
 			{
 				_Cells[x][y].SetType('4');
-				_Cells[x][y].SetChangeGun(false);
+				_Cells[x][y].SetChangeSand(false);
 			}
-			else if (_Cells[x][y].GetChangeNuke())
+			else if (_Cells[x][y].GetChangeGrass())
 			{
 				_Cells[x][y].SetType('5');
-				_Cells[x][y].SetChangeNuke(false);
+				_Cells[x][y].SetChangeGrass(false);
 			}
 		}
 	}

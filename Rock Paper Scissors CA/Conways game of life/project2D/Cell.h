@@ -31,25 +31,25 @@ public:
 	float GetG()						{ return _G; };
 	float GetB()						{ return _B; };
 
-	// Rock Functions
-	bool GetChangeRock()				{ return _ChangeRock; };
-	void SetChangeRock(bool change)		{ _ChangeRock = change; };
+	// Lava Functions
+	bool GetChangeLava()				{ return _ChangeLava; };
+	void SetChangeLava(bool change)		{ _ChangeLava = change; };
 
-	// Paper Functions
-	bool GetChangePaper()				{ return _ChangePaper; };
-	void SetChangePaper(bool change)	{ _ChangePaper = change; };
+	// Shallow Functions
+	bool GetChangeShallow()				{ return _ChangeShallow; };
+	void SetChangeShallow(bool change)	{ _ChangeShallow = change; };
 
-	// Scissors Functions
-	bool GetChangeScissors()			{ return _ChangeScissors; };
-	void SetChangeScissors(bool change) { _ChangeScissors = change; };
+	// DeepWaters Functions
+	bool GetChangeDeepWaters()			{ return _ChangeDeepWaters; };
+	void SetChangeDeepWaters(bool change) { _ChangeDeepWaters = change; };
 	
-	// Gun Functions
-	bool GetChangeGun() { return _ChangeGun; };
-	void SetChangeGun(bool change) { _ChangeGun = change; };
+	// Sand Functions
+	bool GetChangeSand() { return _ChangeSand; };
+	void SetChangeSand(bool change) { _ChangeSand = change; };
 
-	// Nuke Functions
-	bool GetChangeNuke() { return _ChangeNuke; };
-	void SetChangeNuke(bool change) { _ChangeNuke = change; };
+	// Grass Functions
+	bool GetChangeGrass() { return _ChangeGrass; };
+	void SetChangeGrass(bool change) { _ChangeGrass = change; };
 
 private:
 	bool _DeathRow;
@@ -59,11 +59,11 @@ private:
 	float _R;
 	float _G;
 	float _B;
-	char _Type;		// '1' = Rock, '2' = Paper, '3' = Scissors
-	bool _ChangeRock;
-	bool _ChangePaper;
-	bool _ChangeScissors;
-	bool _ChangeGun;
-	bool _ChangeNuke;
+	char _Type;		// '1' = Lava, '2' = Shallow, '3' = DeepWaters
+	bool _ChangeLava;
+	bool _ChangeShallow;
+	bool _ChangeDeepWaters;
+	bool _ChangeSand;
+	bool _ChangeGrass;
 };
 

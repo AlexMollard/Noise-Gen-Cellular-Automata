@@ -10,12 +10,12 @@ Cell::Cell()
 	_B = 0.0f;
 	_CellX = 0.0f;
 	_CellY = 0.0f;
-	_Type = '1';
-	_ChangeRock = false;
-	_ChangePaper = false;
-	_ChangeScissors = false;
-	_ChangeGun = false;
-	_ChangeNuke = false;
+	_Type = '0';
+	_ChangeLava = false;
+	_ChangeShallow = false;
+	_ChangeDeepWaters = false;
+	_ChangeSand = false;
+	_ChangeGrass = false;
 }
 
 Cell::~Cell()
@@ -28,38 +28,38 @@ void Cell::Draw(aie::Renderer2D* renderer)
 
 void Cell::Update(float deltaTime)
 {
-	if (_Alive && _Type == '1')			// Rock
+	if (_Alive && _Type == '1')			// Lava
 	{
-		_R = 0.7f;
-		_G = 0.0f;
-		_B = 0.0f;
+		_R = 0.216f;
+		_G = 0.816f;
+		_B = 0.204f;
 	}
-	else if (_Alive && _Type == '2')	// Paper
+	else if (_Alive && _Type == '2')	// Shallow/Shallow
 	{
-		_R = 0.1f;
-		_G = 0.1f;
-		_B = 0.1f;
+		_R = 0.329f;
+		_G = 0.608f;
+		_B = 0.922f;
 	}
-	else if (_Alive && _Type == '3')	// Scissors
+	else if (_Alive && _Type == '3')	// DeepWater
 	{
 		_R = 0.0f;
 		_G = 0.0f;
-		_B = 0.7f;
+		_B = 0.9f;
 	}
-	else if (_Alive && _Type == '4')	// Gun?
+	else if (_Alive && _Type == '4')	// Sand? 89% red, 87.8% green and 63.1% blue
 	{
-		_R = 0.3f;
-		_G = 0.3f;
-		_B = 0.3f;
+		_R = 0.89f;
+		_G = 0.878f;
+		_B = 0.631f;
 	}
-	else if (_Alive && _Type == '5')	// Nuke?
+	else if (_Alive && _Type == '5')	// Grass?	21.6% red, 81.6% green and 20.4% blue.
 	{
-		_R = 0.0f;
-		_G = 0.4f;
-		_B = 0.0f;
+		_R = 0.216f;
+		_G = 0.816f;
+		_B = 0.204f;
 	}
 
-	else if (!_Alive)
+	else if (!_Alive || _Type == '0')
 	{
 		_R = 0.0f;
 		_G = 0.0f;
