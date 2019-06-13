@@ -74,13 +74,13 @@ void GridManager::Update(aie::Input* input, float deltaTime, float windowWidth, 
 	if (_WindowSizeX != windowWidth || _WindowSizeY != windowHeight)
 		Resize(windowWidth, windowHeight);
 
-	if (_Timer > 0.5 && _Round < 40)
+	if (_Timer > 0.5 && _Round < 300)
 	{
 		CheckNeighbours();
 		_Timer = 0;
 		_Round += 1;
 	}
-	else if(_Round >= 40)
+	else if(_Round >= 300)
 	{
 		cout << "Done!" << endl;
 	}
@@ -292,9 +292,17 @@ void GridManager::CheckNeighbours()
 			{
 				_Cells[x][y].SetChangeGrass(true);
 			}
-			else if (_Cells[x][y].GetType() == '4' && _DeepWaterNeighbours > 5)
+			else if (_Cells[x][y].GetType() == '3' && _SandNeighbours > 2)
+			{
+				_Cells[x][y].SetChangeShallow(true);
+			}
+			else if (_Cells[x][y].GetType() == '4' && _DeepWaterNeighbours > 4)
 			{
 				_Cells[x][y].SetChangeDeepWaters(true);
+			}
+			else if (_Cells[x][y].GetType() == '4' && _TreeNeighbours > 3)
+			{
+				_Cells[x][y].SetChangeGrass(true);
 			}
 			else if (_Cells[x][y].GetType() == '2' && _DeepWaterNeighbours > 5)
 			{
@@ -312,21 +320,33 @@ void GridManager::CheckNeighbours()
 			{
 				_Cells[x][y].SetChangeSand(true);
 			}
+			else if (_Cells[x][y].GetType() == '2' && _DeepWaterNeighbours > 3)
+			{
+				_Cells[x][y].SetChangeSand(true);
+			}
 			else if (_Cells[x][y].GetType() == '5' && _ShallowNeighbours > 2)
 			{
 				_Cells[x][y].SetChangeSand(true);
 			}
-			else if (_Cells[x][y].GetType() == '5' && _DeepWaterNeighbours > 3)
+			else if (_Cells[x][y].GetType() == '5' && _DeepWaterNeighbours > 2)
 			{
-				_Cells[x][y].SetChangeDeepWaters(true);
+				_Cells[x][y].SetChangeShallow(true);
 			}
-			else if (_Cells[x][y].GetType() == '5' && _GrassNeighbours > 4)
+			else if (_Cells[x][y].GetType() == '5' && _GrassNeighbours > 3)
 			{
 				_Cells[x][y].SetChangeTree(true);
 			}
-			else if (_Cells[x][y].GetType() == '4' && _SandNeighbours > 5)
+			else if (_Cells[x][y].GetType() == '4' && _GrassNeighbours > 4)
 			{
 				_Cells[x][y].SetChangeGrass(true);
+			}
+			else if (_Cells[x][y].GetType() == '1' && _TreeNeighbours > 4)
+			{
+				_Cells[x][y].SetChangeGrass(true);
+			}
+			else if (_Cells[x][y].GetType() == '1' && _ShallowNeighbours > 4 || _Cells[x][y].GetType() == '1' && _DeepWaterNeighbours > 2)
+			{
+				_Cells[x][y].SetChangeSand(true);
 			}
 			else if (_Cells[x][y].GetType() == '1')	//Tree				killed by Grass and Shallow
 			{

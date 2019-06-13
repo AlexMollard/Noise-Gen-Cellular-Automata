@@ -1,6 +1,6 @@
 ﻿  GridManager.cpp
-c:\users\alexm\desktop\programming\noise gen\trunk\rock paper scissors ca\conways game of life\project2d\gridmanager.cpp(124): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\alexm\desktop\programming\noise gen\trunk\rock paper scissors ca\conways game of life\project2d\gridmanager.cpp(125): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\alexm\desktop\programming\noise gen\trunk\rock paper scissors ca\conways game of life\project2d\gridmanager.cpp(132): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\alexm\desktop\programming\noise gen\trunk\rock paper scissors ca\conways game of life\project2d\gridmanager.cpp(467): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Project2D.vcxproj -> C:\Users\alexm\Desktop\Programming\Noise Gen\trunk\Rock Paper Scissors CA\Conways game of life\temp\Project2D\x64\Debug\Project2D.exe
+c:\users\alexm\desktop\programming\noise gen\trunk\rock paper scissors ca\project2d\gridmanager.cpp(124): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\alexm\desktop\programming\noise gen\trunk\rock paper scissors ca\project2d\gridmanager.cpp(125): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\alexm\desktop\programming\noise gen\trunk\rock paper scissors ca\project2d\gridmanager.cpp(132): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\alexm\desktop\programming\noise gen\trunk\rock paper scissors ca\project2d\gridmanager.cpp(487): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Project2D.vcxproj -> C:\Users\alexm\Desktop\Programming\Noise Gen\trunk\Rock Paper Scissors CA\temp\Project2D\x64\Debug\Project2D.exe
