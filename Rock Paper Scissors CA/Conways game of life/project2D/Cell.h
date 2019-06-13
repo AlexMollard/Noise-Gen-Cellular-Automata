@@ -31,9 +31,9 @@ public:
 	float GetG()						{ return _G; };
 	float GetB()						{ return _B; };
 
-	// Lava Functions
-	bool GetChangeLava()				{ return _ChangeLava; };
-	void SetChangeLava(bool change)		{ _ChangeLava = change; };
+	// Tree Functions
+	bool GetChangeTree()				{ return _ChangeTree; };
+	void SetChangeTree(bool change)		{ _ChangeTree = change; };
 
 	// Shallow Functions
 	bool GetChangeShallow()				{ return _ChangeShallow; };
@@ -59,8 +59,8 @@ private:
 	float _R;
 	float _G;
 	float _B;
-	char _Type;		// '1' = Lava, '2' = Shallow, '3' = DeepWaters
-	bool _ChangeLava;
+	char _Type;		// '1' = Tree, '2' = Shallow, '3' = DeepWaters
+	bool _ChangeTree;
 	bool _ChangeShallow;
 	bool _ChangeDeepWaters;
 	bool _ChangeSand;

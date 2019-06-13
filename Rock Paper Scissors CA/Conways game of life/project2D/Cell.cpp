@@ -11,7 +11,7 @@ Cell::Cell()
 	_CellX = 0.0f;
 	_CellY = 0.0f;
 	_Type = '0';
-	_ChangeLava = false;
+	_ChangeTree = false;
 	_ChangeShallow = false;
 	_ChangeDeepWaters = false;
 	_ChangeSand = false;
@@ -28,10 +28,10 @@ void Cell::Draw(aie::Renderer2D* renderer)
 
 void Cell::Update(float deltaTime)
 {
-	if (_Alive && _Type == '1')			// Lava
+	if (_Alive && _Type == '1')			// Tree
 	{
 		_R = 0.216f;
-		_G = 0.816f;
+		_G = 0.316f;
 		_B = 0.204f;
 	}
 	else if (_Alive && _Type == '2')	// Shallow/Shallow

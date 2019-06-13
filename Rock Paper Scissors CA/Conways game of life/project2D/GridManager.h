@@ -22,6 +22,7 @@ private:
 	int _CellTotal;
 	int _CellSizeX;
 	int _CellSizeY;
+	int _Round;
 
 	Cell** _Cells;
 

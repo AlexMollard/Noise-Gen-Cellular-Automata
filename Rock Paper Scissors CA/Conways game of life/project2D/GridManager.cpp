@@ -15,8 +15,9 @@ GridManager::GridManager(int cellAmount, float windowSizeX, float windowSizeY)
 	_CellSizeX = 10;
 	_CellSizeY = 10;
 
-	// Set Timer for each generation
+	// Set Timer and round for each generation
 	_Timer = 0;
+	_Round = 0;
 
 	// Create Cells
 	_Cells = new Cell*[_CellTotal];
@@ -36,7 +37,7 @@ GridManager::GridManager(int cellAmount, float windowSizeX, float windowSizeY)
 			{
 				int _RandomType = rand() % 50;
 				if (_RandomType < 10)
-					_Cells[x][y].SetType('1');	//Lava
+					_Cells[x][y].SetType('1');	//Tree
 				else if (_RandomType < 20)
 					_Cells[x][y].SetType('2');	//Shallow
 				else if (_RandomType < 25)
@@ -73,14 +74,20 @@ void GridManager::Update(aie::Input* input, float deltaTime, float windowWidth, 
 	if (_WindowSizeX != windowWidth || _WindowSizeY != windowHeight)
 		Resize(windowWidth, windowHeight);
 
-	if (_Timer > 1)
+	if (_Timer > 0.5 && _Round < 40)
 	{
 		CheckNeighbours();
 		_Timer = 0;
+		_Round += 1;
+	}
+	else if(_Round >= 40)
+	{
+		cout << "Done!" << endl;
 	}
 
 	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
 		{
+		_Round = 0;
 		// Randomize cells
 		for (int x = 0; x < _CellTotal; x++)
 		{
@@ -92,7 +99,7 @@ void GridManager::Update(aie::Input* input, float deltaTime, float windowWidth, 
 				{
 					int _RandomType = rand() % 50;
 					if (_RandomType < 10)
-						_Cells[x][y].SetType('1');	//Lava
+						_Cells[x][y].SetType('1');	//Tree
 					else if (_RandomType < 20)
 						_Cells[x][y].SetType('2');	//Shallow
 					else if (_RandomType < 25)
@@ -114,15 +121,15 @@ void GridManager::Resize(float windowWidth, float windowHeight)
 		_WindowSizeY = windowHeight;
 
 		// Cell size
-		_CellSizeX = _WindowSizeX / _CellTotal;
-		_CellSizeY = _WindowSizeY / _CellTotal;
+		_CellSizeX = _WindowSizeX / _CellTotal / 2;
+		_CellSizeY = _WindowSizeY / _CellTotal / 2;
 
 		for (int x = 0; x < _CellTotal; x++)
 		{
 			for (int y = 0; y < _CellTotal; y++)
 			{
 				// Cell Postition
-				_Cells[x][y].SetPos(x * _CellSizeX, y * _CellSizeY);
+				_Cells[x][y].SetPos(x * _CellSizeX * 1.5, y * _CellSizeY * 1.5);
 			}
 		}
 }
@@ -133,7 +140,7 @@ void GridManager::CheckNeighbours()
 	{
 		for (int y = 0; y < _CellTotal; y++)
 		{
-			int _LavaNeighbours = 0;
+			int _TreeNeighbours = 0;
 			int _ShallowNeighbours = 0;
 			int _DeepWaterNeighbours = 0;
 			int _SandNeighbours = 0;
@@ -144,7 +151,7 @@ void GridManager::CheckNeighbours()
 				if (_Cells[x + 1][y + 1].GetAlive())				  // - | - | X
 				{ 													  // - | - | -
 					if (_Cells[x + 1][y + 1].GetType() == '1')		  // - | - | -
-						_LavaNeighbours += 1;
+						_TreeNeighbours += 1;
 					else if (_Cells[x + 1][y + 1].GetType() == '2')
 						_ShallowNeighbours += 1;
 					else if (_Cells[x + 1][y + 1].GetType() == '3')							 
@@ -161,7 +168,7 @@ void GridManager::CheckNeighbours()
 				if (_Cells[x][y + 1].GetAlive())					  // - | X | -
 				{													  // - | - | -
 					if (_Cells[x][y + 1].GetType() == '1')		 	  // - | - | -
-						_LavaNeighbours += 1;
+						_TreeNeighbours += 1;
 					else if (_Cells[x][y + 1].GetType() == '2')
 						_ShallowNeighbours += 1;
 					else if (_Cells[x][y + 1].GetType() == '3')						
@@ -178,7 +185,7 @@ void GridManager::CheckNeighbours()
 				if (_Cells[x - 1][y + 1].GetAlive())			  
 				{												  
 					if (_Cells[x - 1][y + 1].GetType() == '1')
-						_LavaNeighbours += 1;
+						_TreeNeighbours += 1;
 					else if (_Cells[x - 1][y + 1].GetType() == '2')
 						_ShallowNeighbours += 1;
 					else if (_Cells[x - 1][y + 1].GetType() == '3')
@@ -195,7 +202,7 @@ void GridManager::CheckNeighbours()
 				if (_Cells[x - 1][y].GetAlive())				  
 				{
 					if (_Cells[x - 1][y].GetType() == '1')
-						_LavaNeighbours += 1;
+						_TreeNeighbours += 1;
 					else if (_Cells[x - 1][y].GetType() == '2')
 						_ShallowNeighbours += 1;
 					else if (_Cells[x - 1][y].GetType() == '3')
@@ -212,7 +219,7 @@ void GridManager::CheckNeighbours()
 				if (_Cells[x + 1][y].GetAlive())				  
 				{
 					if (_Cells[x + 1][y].GetType() == '1')
-						_LavaNeighbours += 1;
+						_TreeNeighbours += 1;
 					else if (_Cells[x + 1][y].GetType() == '2')
 						_ShallowNeighbours += 1;
 					else if (_Cells[x + 1][y].GetType() == '3')
@@ -229,7 +236,7 @@ void GridManager::CheckNeighbours()
 				if (_Cells[x - 1][y - 1].GetAlive())			  
 				{
 					if (_Cells[x - 1][y - 1].GetType() == '1')
-						_LavaNeighbours += 1;
+						_TreeNeighbours += 1;
 					else if (_Cells[x - 1][y - 1].GetType() == '2')
 						_ShallowNeighbours += 1;
 					else if (_Cells[x - 1][y - 1].GetType() == '3')
@@ -246,7 +253,7 @@ void GridManager::CheckNeighbours()
 				if (_Cells[x][y - 1].GetAlive())				  
 				{
 					if (_Cells[x][y - 1].GetType() == '1')
-						_LavaNeighbours += 1;
+						_TreeNeighbours += 1;
 					else if (_Cells[x][y - 1].GetType() == '2')
 						_ShallowNeighbours += 1;
 					else if (_Cells[x][y - 1].GetType() == '3')
@@ -264,7 +271,7 @@ void GridManager::CheckNeighbours()
 				if (_Cells[x + 1][y - 1].GetAlive())			  
 				{
 					if (_Cells[x + 1][y - 1].GetType() == '1')
-						_LavaNeighbours += 1;
+						_TreeNeighbours += 1;
 					else if (_Cells[x + 1][y - 1].GetType() == '2')
 						_ShallowNeighbours += 1;
 					else if (_Cells[x + 1][y - 1].GetType() == '3')
@@ -313,22 +320,26 @@ void GridManager::CheckNeighbours()
 			{
 				_Cells[x][y].SetChangeDeepWaters(true);
 			}
+			else if (_Cells[x][y].GetType() == '5' && _GrassNeighbours > 4)
+			{
+				_Cells[x][y].SetChangeTree(true);
+			}
 			else if (_Cells[x][y].GetType() == '4' && _SandNeighbours > 5)
 			{
 				_Cells[x][y].SetChangeGrass(true);
 			}
-			else if (_Cells[x][y].GetType() == '1')	//Lava				killed by Grass and Shallow
+			else if (_Cells[x][y].GetType() == '1')	//Tree				killed by Grass and Shallow
 			{
 				if (_ShallowNeighbours > _GrassNeighbours)
 				{
-					if (_ShallowNeighbours > _LavaNeighbours - 2 )
+					if (_ShallowNeighbours > _TreeNeighbours - 2 )
 					{
 						_Cells[x][y].SetChangeShallow(true);
 					}
 				}
 				else if (_ShallowNeighbours < _GrassNeighbours)
 				{
-					if (_GrassNeighbours > _LavaNeighbours)
+					if (_GrassNeighbours > _TreeNeighbours)
 					{
 						_Cells[x][y].SetChangeGrass(true);
 					}
@@ -351,42 +362,42 @@ void GridManager::CheckNeighbours()
 					}
 				}
 			}
-			else if (_Cells[x][y].GetType() == '3') //DeepWater		Killed by Lava and Sand
+			else if (_Cells[x][y].GetType() == '3') //DeepWater		Killed by Tree and Sand
 			{
 				if (_ShallowNeighbours > 5)
 				{
 					_Cells[x][y].SetChangeShallow(true);
 				}
 
-				if (_SandNeighbours > _LavaNeighbours)
+				if (_SandNeighbours > _TreeNeighbours)
 				{
 					if (_SandNeighbours > _DeepWaterNeighbours)
 					{
 						_Cells[x][y].SetChangeSand(true);
 					}
 				}
-				else if (_SandNeighbours < _LavaNeighbours)
+				else if (_SandNeighbours < _TreeNeighbours)
 				{
-					if (_LavaNeighbours > _DeepWaterNeighbours)
+					if (_TreeNeighbours > _DeepWaterNeighbours)
 					{
-						_Cells[x][y].SetChangeLava(true);
+						_Cells[x][y].SetChangeTree(true);
 					}
 				}
 			}
-			else if (_Cells[x][y].GetType() == '4') //Sand			Killed by Lava and Shallow
+			else if (_Cells[x][y].GetType() == '4') //Sand			Killed by Tree and Shallow
 			{
-				if (_ShallowNeighbours > _LavaNeighbours - 6)
+				if (_ShallowNeighbours > _TreeNeighbours - 6)
 				{
 					if (_ShallowNeighbours > _SandNeighbours)
 					{
 						_Cells[x][y].SetChangeShallow(true);
 					}
 				}
-				else if (_ShallowNeighbours < _LavaNeighbours)
+				else if (_ShallowNeighbours < _TreeNeighbours)
 				{
-					if (_LavaNeighbours > _SandNeighbours)
+					if (_TreeNeighbours > _SandNeighbours)
 					{
-						_Cells[x][y].SetChangeLava(true);
+						_Cells[x][y].SetChangeTree(true);
 					}
 				}
 			}
@@ -425,10 +436,10 @@ void GridManager::CheckNeighbours()
 				_Cells[x][y].SetType('3');
 				_Cells[x][y].SetChangeDeepWaters(false);
 			}
-			else if (_Cells[x][y].GetChangeLava())
+			else if (_Cells[x][y].GetChangeTree())
 			{
 				_Cells[x][y].SetType('1');
-				_Cells[x][y].SetChangeLava(false);
+				_Cells[x][y].SetChangeTree(false);
 			}
 			else if (_Cells[x][y].GetChangeSand())
 			{
