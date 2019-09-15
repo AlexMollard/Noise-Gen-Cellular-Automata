@@ -14,6 +14,7 @@ public:
 
 	void Resize(float windowWidth, float windowHeight);
 	void CheckNeighbours();
+	void FinalTouches();
 
 private:
 	float _WindowSizeX;
